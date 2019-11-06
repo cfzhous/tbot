@@ -11,18 +11,19 @@ from leancloud import Engine, Query, Object, LeanCloudError
 import random
 import re
 import sys
-import urllib2
+import importlib
+from urllib.request import urlopen
 import json
 import threading
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
+importlib.reload(sys)
+
 
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-bot_name = '@XiaoaiBot'
+bot_name = '@cfzhouBot'
 
 global bot
 # 由于 美国节点，只能 git 部署，我不得不开源 token，请不要随便拿去用，如需生成你自己的 token
@@ -260,8 +261,8 @@ def songci(message):
         return
     bot.sendChatAction(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     text = text.replace(' ', '·')
-    keyword = urllib2.quote(text)
-    response = urllib2.urlopen(songci_api + keyword)
+    keyword = urllib.request.quote(text)
+    response = urllib.request.urlopen(songci_api + keyword)
     data = json.loads(response.read())
     Songci = Object.extend('Songci')
     __songci = Songci()
